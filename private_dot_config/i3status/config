@@ -49,7 +49,7 @@ battery 0 {
 order += "time"
 
 time {
-        format = "%Y-%m-%d %H:%M:%S"
+        format = "%b-%d %H:%M"
 }
 
 order += "volume master"
