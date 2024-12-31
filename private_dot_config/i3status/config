@@ -18,15 +18,14 @@ load {
 order += "memory"
 
 memory {
-        format = "%used MB/%total MB"
-        threshold_degraded = 1024
+        format = "ram %used"
 }
 
 # Display disk usage
-order += "disk /"
+# order += "disk /"
 
 disk "/" {
-        format = "%free"
+        format = "disk %used"
 }
 
 # Display wireless information
