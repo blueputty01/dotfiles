@@ -1,10 +1,14 @@
 # i3status configuration file
 # See "man i3status" for documentation.
 
+# to test, run i3status ~/.config/i3status/config
+
 general {
         output_format = "i3bar"
         colors = true
-        interval = 5
+        interval = 3
+	      color_degraded = "#abafb3"
+	      color_bad = "#eb4034"
 }
 
 # Display system load
@@ -29,11 +33,18 @@ disk "/" {
 }
 
 # Display wireless information
-order += "wireless wlp3s0"
+order += "wireless _first_"
 
-wireless wlp3s0 {
-        format_up = "%quality %essid"
-        format_down = "offline"
+wireless _first_ {
+        format_up = "wifi %quality %essid"
+        format_down = ""
+}
+
+order += "ethernet _first_"
+
+ethernet _first_ {
+	format_up = "eth %ip"
+	format_down = ""
 }
 
 # Display battery information
@@ -54,7 +65,7 @@ time {
 order += "volume master"
 
 volume master {
-        format = "♪: %volume"
-        format_muted = "♪: muted (%volume)"
-
+        format = "vlm %volume"
+        format_muted = "vlm muted (%volume)"
 }
+
