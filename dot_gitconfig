@@ -5,3 +5,5 @@
 	email = 65861156+blueputty01@users.noreply.github.com
 [core]
 	editor = nvim
+[pull]
+	rebase = true

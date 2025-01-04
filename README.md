@@ -1,12 +1,10 @@
 # Overview
 
-Contains zsh, i3, i3status, and nvim configs (for now..)
+I use chezmoi to maintain my dotfiles across machine
 
-# Usage
+https://www.chezmoi.io/quick-start/
 
-I use [chezmoi](https://www.chezmoi.io/quick-start/) to sync dotfiles across machines.
-
-## Setting up a new machine 
+# Setting up a new machine 
 
 ```bashrc
 chezmoi init --apply blueputty01
