@@ -13,11 +13,7 @@ chezmoi init --apply blueputty01
 
 ## utils
 
-## neovim
-
 [nvim](https://github.com/neovim/neovim/blob/master/INSTALL.md)
-
-## other
 
 ```bash
 sudo apt install tmux
