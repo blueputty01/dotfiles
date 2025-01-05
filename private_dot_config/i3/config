@@ -45,6 +45,7 @@ set $refresh_i3status killall -SIGUSR1 i3status
 bindsym XF86AudioRaiseVolume exec "amixer -q sset Master 3%+ unmute"
 bindsym XF86AudioLowerVolume exec "amixer -q sset Master 3%-"
 bindsym XF86AudioMute exec "amixer -q sset Master toggle"
+
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # screen brightness control
@@ -172,6 +173,8 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 bindsym $mod+Shift+c move container to workspace $wscal
 bindsym $mod+Shift+m move container to workspace $wsmus
 
+bindsym $mod+Tab workspace back_and_forth
+
 # reload the configuration file
 # bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
@@ -211,7 +214,7 @@ focus_on_window_activation focus
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-     status_command i3status | ~/.config/i3/i3status_wrapper.py
+     status_command i3status | ~/.config/i3status/i3status_wrapper.py
 }
 
 # power settings
