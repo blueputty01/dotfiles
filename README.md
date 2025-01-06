@@ -6,14 +6,18 @@ https://www.chezmoi.io/quick-start/
 
 # Setting up a new machine 
 
-```bashrc
+```bash
 chezmoi init --apply blueputty01
 ```
 # debian deps
 
-## utils
+## nvim
 
-[nvim](https://github.com/neovim/neovim/blob/master/INSTALL.md)
+[I build from source](https://github.com/neovim/neovim/blob/master/INSTALL.md)
+
+```bash
+sudo apt install fzf
+```
 
 ## tpm
 
