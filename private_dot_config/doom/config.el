@@ -40,7 +40,7 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+(setq org-directory "~/Documents/org/")
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
@@ -74,3 +74,73 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+
+(setq which-key-idle-delay 0.5)
+
+;; begin gtd config
+(setq org-agenda-files '("projects.org"))
+;; inbox setup
+(setq org-capture-templates
+       `(("i" "Inbox" entry  (file "inbox.org")
+        ,(concat "* TODO %?\n"
+                 "/Entered on/ %U"))))
+
+(defun org-capture-inbox ()
+     (interactive)
+     (call-interactively 'org-store-link)
+     (org-capture nil "i"))
+
+(define-key global-map (kbd "C-c i") 'org-capture-inbox)
+
+;; todo setup
+(after! org (setq org-todo-keywords
+      '((sequence "TODO" "NOW" "WAITING" "SOMEDAY" "SNOOZED" "NEXT"))))
+;; TODO colors
+(after! org (setq org-todo-keyword-faces
+      '(
+        ("TODO" . (:foreground "systemGreenColor" :weight bold))
+        ("NOW" . (:foreground "systemBlueColor" :weight bold))
+        ("WAITING" . (:foreground "systemBrownColor" :weight bold))
+        ("SOMEDAY" . (:foreground "systemGrayColor" :weight bold))
+        ("SNOOZED" . (:foreground "systemGrayColor" :weight bold))
+        ("NEXT" . (:foreground "labelColor" :weight bold))
+        )))
+
+
+;; agenda setup
+(define-key global-map (kbd "C-c a") 'org-agenda)
+(setq org-agenda-hide-tags-regexp ".") ;; hides all tags
+(setq org-agenda-prefix-format
+      '((agenda . " %i %-12:c%?-12t% s")
+        (todo   . " %i %-12:c")
+        (tags   . " %i %-12:c")
+        (search . " %i %-12:c")))
+
+;; adapted from https://gist.github.com/kim366/8abe978cc295b027df636b218862758e
+;; Automatically fetch link description (C-c C-l) for link at point
+
+(defun my/url-get-title (url &optional descr)
+  "Fetch the title of the page at URL. Return an error message on failure."
+  (let ((buffer (url-retrieve-synchronously url t)))
+    (if buffer
+        (with-current-buffer buffer
+          (goto-char (point-min))
+          (if (search-forward-regexp (rx "<title>" (group (*? anything)) "</title>") nil t)
+              (prog1
+                  (match-string 1)
+                (kill-buffer buffer)) ;; Clean up buffer
+            (prog1
+                "No title found"
+              (kill-buffer buffer)))) ;; Clean up buffer
+      "Failed to fetch URL")))
+
+(setq org-make-link-description-function 'my/url-get-title)
+
+(defun org-next-action()
+  "Automatically add default properties to TODO entries."
+  (when (string= (org-get-todo-state) "TODO")
+    (org-entry-put nil "FOCUS_NEEDED" "medium")
+    (org-entry-put nil "PRIORITY" "A")
+    (org-entry-put nil "ESTIMATED_TIME" "0:30")))
+
+

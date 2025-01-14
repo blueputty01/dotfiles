@@ -1,6 +1,7 @@
 # Place a copy of this config to ~/.aerospace.toml
 # After that, you can edit ~/.aerospace.toml to your liking
 
+menu-bar-style = 'image-with-background-workspaces'
 # You can use it to add commands that run after login to macOS user session.
 # 'start-at-login' needs to be 'true' for 'after-login-command' to work
 # Available commands: https://nikitabobko.github.io/AeroSpace/commands
@@ -150,13 +151,13 @@ alt-shift-m = 'move-node-to-workspace M'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 alt-tab = 'workspace-back-and-forth'
-alt-s = 'exec-and-forget aerospace list-workspaces --monitor focused --empty no | sed "s/[CM]//g" | aerospace workspace next --wrap-around'
-alt-a = 'exec-and-forget aerospace list-workspaces --monitor focused --empty no | sed "s/[CM]//g" | aerospace workspace prev --wrap-around'
+# alt-s = 'exec-and-forget aerospace list-workspaces --monitor focused --empty no | sed "s/[CM]//g" | aerospace workspace next --wrap-around'
+# alt-a = 'exec-and-forget aerospace list-workspaces --monitor focused --empty no | sed "s/[CM]//g" | aerospace workspace prev --wrap-around'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
 alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
-alt-d = 'exec-and-forget aerospace workspace "$(aerospace list-workspaces --empty --monitor focused | head -n 1)"'
-shift-alt-d = 'exec-and-forget workspace="$(aerospace list-workspaces --empty --monitor focused | head -n 1)" && aerospace move-node-to-workspace $workspace && aerospace workspace $workspace'
+# alt-d = 'exec-and-forget aerospace workspace "$(aerospace list-workspaces --empty --monitor focused | head -n 1)"'
+# shift-alt-d = 'exec-and-forget workspace="$(aerospace list-workspaces --empty --monitor focused | head -n 1)" && aerospace move-node-to-workspace $workspace && aerospace workspace $workspace'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
 alt-shift-semicolon = 'mode service'
