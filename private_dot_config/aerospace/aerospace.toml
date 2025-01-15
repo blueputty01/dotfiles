@@ -36,7 +36,7 @@ default-root-container-orientation = 'auto'
 # Drop it from your config, if you don't like this behavior
 # See https://nikitabobko.github.io/AeroSpace/guide#on-focus-changed-callbacks
 # See https://nikitabobko.github.io/AeroSpace/commands#move-mouse
-# Fallback value (if you omit the key): on-focused-monitor-changed = []
+# Fallbapauseck value (if you omit the key): on-focused-monitor-changed = []
 # on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 on-focus-changed = ['move-mouse window-lazy-center']
 
@@ -161,6 +161,7 @@ alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
 alt-shift-semicolon = 'mode service'
+alt-shift-a = 'mode media'
 
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -181,6 +182,20 @@ alt-shift-j = ['join-with down', 'mode main']
 alt-shift-k = ['join-with up', 'mode main']
 alt-shift-l = ['join-with right', 'mode main']
 
+
+[mode.media.binding]
+esc = 'mode main'
+
+s = ['''exec-and-forget osascript -e '
+tell application "Spotify" to pause' 
+tell application "Brave Browser" to pause'
+end tell' 
+''', 'mode main']
+c = ['''exec-and-forget osascript -e '
+tell application "Spotify" to play'
+tell application "Brave Browser" to play'
+end tell' 
+''', 'mode main']
 down = 'volume down'
 up = 'volume up'
 shift-down = ['volume set 0', 'mode main']
