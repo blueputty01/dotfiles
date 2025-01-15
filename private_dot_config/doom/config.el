@@ -77,45 +77,6 @@
 
 (setq which-key-idle-delay 0.5)
 
-;; begin gtd config
-(setq org-agenda-files '("projects.org"))
-;; inbox setup
-(setq org-capture-templates
-       `(("i" "Inbox" entry  (file "inbox.org")
-        ,(concat "* TODO %?\n"
-                 "/Entered on/ %U"))))
-
-(defun org-capture-inbox ()
-     (interactive)
-     (call-interactively 'org-store-link)
-     (org-capture nil "i"))
-
-(define-key global-map (kbd "C-c i") 'org-capture-inbox)
-
-;; todo setup
-(after! org (setq org-todo-keywords
-      '((sequence "TODO" "NOW" "WAITING" "SOMEDAY" "SNOOZED" "NEXT"))))
-;; TODO colors
-(after! org (setq org-todo-keyword-faces
-      '(
-        ("TODO" . (:foreground "systemGreenColor" :weight bold))
-        ("NOW" . (:foreground "systemBlueColor" :weight bold))
-        ("WAITING" . (:foreground "systemBrownColor" :weight bold))
-        ("SOMEDAY" . (:foreground "systemGrayColor" :weight bold))
-        ("SNOOZED" . (:foreground "systemGrayColor" :weight bold))
-        ("NEXT" . (:foreground "labelColor" :weight bold))
-        )))
-
-
-;; agenda setup
-(define-key global-map (kbd "C-c a") 'org-agenda)
-(setq org-agenda-hide-tags-regexp ".") ;; hides all tags
-(setq org-agenda-prefix-format
-      '((agenda . " %i %-12:c%?-12t% s")
-        (todo   . " %i %-12:c")
-        (tags   . " %i %-12:c")
-        (search . " %i %-12:c")))
-
 ;; adapted from https://gist.github.com/kim366/8abe978cc295b027df636b218862758e
 ;; Automatically fetch link description (C-c C-l) for link at point
 
@@ -136,11 +97,78 @@
 
 (setq org-make-link-description-function 'my/url-get-title)
 
+;; begin gtd config
+(setq org-agenda-files '("projects.org" ))
+
+;; ;; inbox setup
+;; (setq org-capture-templates
+;;        `(("i" "Inbox" entry  (file "inbox.org")
+;;         ,(concat "* TODO %?\n"
+;;                  "/Entered on/ %U"))))
+
+;; (defun org-capture-inbox ()
+;;      (interactive)
+;;      (call-interactively 'org-store-link)
+;;      (org-capture nil "i"))
+
+;; (define-key global-map (kbd "C-c i") 'org-capture-inbox)
+
+;; todo setup
+(after! org (setq org-todo-keywords
+      '((sequence "TODO" "NOW" "WAITING" "SOMEDAY" "SNOOZED" "NEXT"))))
+;; TODO colors
+(after! org (setq org-todo-keyword-faces
+      '(
+        ("TODO" . (:foreground "systemGreenColor" :weight bold))
+        ("NOW" . (:foreground "systemBlueColor" :weight bold))
+        ("WAITING" . (:foreground "systemBrownColor" :weight bold))
+        ("SOMEDAY" . (:foreground "systemGrayColor" :weight bold))
+        ("SNOOZED" . (:foreground "systemGrayColor" :weight bold))
+        ("NEXT" . (:foreground "labelColor" :weight bold))
+        )))
+
+
+;; agenda setup
+;; (define-key global-map (kbd "C-c a") 'org-agenda)
+;; (setq org-agenda-hide-tags-regexp ".") ;; hides all tags
+(setq org-agenda-prefix-format
+      '((agenda . " %i %-30b %-12t% s")
+        (todo   . " %i %-30b %-12t")
+        (tags   . " %i %-30b %-12t")
+        (search . " %i %-30b %-12t")))
+
+;; Agenda View "d"
+(defun air-org-skip-subtree-if-priority (priority)
+  "Skip an agenda subtree if it has a priority of PRIORITY.
+
+  PRIORITY may be one of the characters ?A, ?B, or ?C."
+  (let ((subtree-end (save-excursion (org-end-of-subtree t)))
+        (pri-value (* 1000 (- org-lowest-priority priority)))
+        (pri-current (org-get-priority (thing-at-point 'line t))))
+    (if (= pri-value pri-current)
+        subtree-end
+      nil)))
+
+(setq org-agenda-skip-deadline-if-done t)
+
+(setq org-agenda-custom-commands
+      '(
+        ;; Daily Agenda & TODOs
+        ("d" "Daily agenda and all TODOs"
+         (
+          ;; View 7 days in the calendar view
+          (agenda "" ((org-agenda-span 7)))
+          ;; TODO items with custom header
+          (todo "TODO" ((org-agenda-overriding-header "all normal priority TODO")))
+         )
+         ;; General settings for this view
+         ((org-agenda-compact-blocks nil))
+        )
+      ))
+
 (defun org-next-action()
   "Automatically add default properties to TODO entries."
   (when (string= (org-get-todo-state) "TODO")
     (org-entry-put nil "FOCUS_NEEDED" "medium")
-    (org-entry-put nil "PRIORITY" "A")
+    ;; (org-entry-put nil "PRIORITY" "A")
     (org-entry-put nil "ESTIMATED_TIME" "0:30")))
-
-
