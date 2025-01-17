@@ -115,60 +115,120 @@
 
 ;; todo setup
 (after! org (setq org-todo-keywords
-      '((sequence "TODO" "NOW" "WAITING" "SOMEDAY" "SNOOZED" "NEXT"))))
+                  '((sequence "TODO" "TODOLOW" "WAITING" "SOMEDAY" "SNOOZED" "NEXT"))))
 ;; TODO colors
 (after! org (setq org-todo-keyword-faces
-      '(
-        ("TODO" . (:foreground "systemGreenColor" :weight bold))
-        ("NOW" . (:foreground "systemBlueColor" :weight bold))
-        ("WAITING" . (:foreground "systemBrownColor" :weight bold))
-        ("SOMEDAY" . (:foreground "systemGrayColor" :weight bold))
-        ("SNOOZED" . (:foreground "systemGrayColor" :weight bold))
-        ("NEXT" . (:foreground "labelColor" :weight bold))
-        )))
-
+                  '(
+                    ("TODO" . (:foreground "systemGreenColor" :weight bold))
+                    ("TODOLOW" . (:foreground "systemGreenColor" :weight bold))
+                    ("WAITING" . (:foreground "systemBrownColor" :weight bold))
+                    ("SOMEDAY" . (:foreground "systemGrayColor" :weight bold))
+                    ("SNOOZED" . (:foreground "systemGrayColor" :weight bold))
+                    ("NEXT" . (:foreground "systemGrayColor" :weight bold))
+                    )))
 
 ;; agenda setup
-;; (define-key global-map (kbd "C-c a") 'org-agenda)
-;; (setq org-agenda-hide-tags-regexp ".") ;; hides all tags
-(setq org-agenda-prefix-format
-      '((agenda . " %i %-30b %-12t% s")
-        (todo   . " %i %-30b %-12t")
-        (tags   . " %i %-30b %-12t")
-        (search . " %i %-30b %-12t")))
+(define-key global-map (kbd "C-c a") 'org-agenda)
 
-;; Agenda View "d"
-(defun air-org-skip-subtree-if-priority (priority)
-  "Skip an agenda subtree if it has a priority of PRIORITY.
+;; (defun my/org-agenda-truncate-breadcrumb (breadcrumb max-length)
+;;   "Truncate the BREADCRUMB string from the beginning if it exceeds MAX-LENGTH."
+;;   (if (> (length breadcrumb) max-length)
+;;       (concat "…" (substring breadcrumb (- (length breadcrumb) max-length)))
+;;     breadcrumb))
 
-  PRIORITY may be one of the characters ?A, ?B, or ?C."
-  (let ((subtree-end (save-excursion (org-end-of-subtree t)))
-        (pri-value (* 1000 (- org-lowest-priority priority)))
-        (pri-current (org-get-priority (thing-at-point 'line t))))
-    (if (= pri-value pri-current)
-        subtree-end
-      nil)))
+;; (defun my/org-agenda-format-prefix (marker)
+;;   "Custom format for agenda prefix, truncating the breadcrumb if needed."
+;;   (let ((breadcrumb (org-get-outline-path marker))
+;;         (max-length 20)) ;; Set the desired max length for breadcrumbs
+;;     (if breadcrumb
+;;         (format " %s" (my/org-agenda-truncate-breadcrumb
+;;                        (string-join breadcrumb "/") max-length))
+;;       "")))
 
-(setq org-agenda-skip-deadline-if-done t)
+;; (advice-add 'org-agenda-format-item :around
+;;             (lambda (orig-fn extra txt &rest args)
+;;               "Apply custom prefix formatting for Org Agenda items."
+;;               (let* ((marker (get-text-property 0 'org-marker txt))
+;;                      (prefix (if marker (my/org-agenda-format-prefix marker) "")))
+;;                 (apply orig-fn extra (concat prefix txt) args))))
 
-(setq org-agenda-custom-commands
-      '(
-        ;; Daily Agenda & TODOs
-        ("d" "Daily agenda and all TODOs"
-         (
-          ;; View 7 days in the calendar view
-          (agenda "" ((org-agenda-span 7)))
-          ;; TODO items with custom header
-          (todo "TODO" ((org-agenda-overriding-header "all normal priority TODO")))
-         )
-         ;; General settings for this view
-         ((org-agenda-compact-blocks nil))
-        )
-      ))
+
 
 (defun org-next-action()
   "Automatically add default properties to TODO entries."
   (when (string= (org-get-todo-state) "TODO")
     (org-entry-put nil "FOCUS_NEEDED" "medium")
-    ;; (org-entry-put nil "PRIORITY" "A")
-    (org-entry-put nil "ESTIMATED_TIME" "0:30")))
+    ))
+
+
+(use-package! org-super-agenda :after org-agenda :config (org-super-agenda-mode))
+
+
+(setq org-agenda-prefix-format
+      '((agenda . "%-12s %-5e %-30b")
+       (timeline . "  % s")
+       (todo . " %i %-12:c")
+       (tags . " %i %-12:c")
+       (search . " %i %-12:c")))
+
+(setq org-agenda-custom-commands
+      '(
+        ("d" "Dashboard"
+         (
+         (tags "TODO=\"SOMEDAY\"-SCHEDULED={.+}"
+                ((org-agenda-prefix-format "%-50b %s")
+                 (org-agenda-overriding-header "Not scheduled reviews")))
+          ;; SNOOZED items with deadlines or scheduled dates for today or earlier
+          ;; (tags "+SNOOZED+DEADLINE<=<now>|+SNOOZED+SCHEDULED<=<now>"
+          (tags "TODO=\"SNOOZED\"+SCHEDULED<=\"<now>\""
+                ;; (todo "SNOOZED"
+                ((org-agenda-overriding-header "SNOOZED Items")
+                 (org-agenda-prefix-format "%-50b")
+                 (org-agenda-sorting-strategy '(deadline-up))))
+
+          ;; WAITING items
+          (todo "WAITING"
+                ((org-agenda-overriding-header "WAITING Items")
+                 (org-agenda-sorting-strategy '(deadline-up))))
+
+          ;; DEADLINE items: items with a deadline that have not been turned into actions
+          (todo "DEADLINE"
+                ((org-agenda-overriding-header "DEADLINE Items")
+                 (org-agenda-sorting-strategy '(deadline-up))))
+
+          (agenda "" ((org-agenda-span 7)))
+          ;; Next 7 days (excluding SOMEDAY)
+          ;; (agenda ""
+          ;;         ((org-agenda-span 7)
+          ;;          (org-agenda-overriding-header "Next 7 Days (Excluding SOMEDAY)")
+          ;;          (org-agenda-skip-function
+          ;;           '(org-agenda-skip-entry-if 'todo '("SOMEDAY" "SNOOZED")))))
+
+          ;; Categorized by Tags
+          (todo "TODO"
+                     ((org-agenda-overriding-header "Categorized by Tags")
+                      (org-agenda-prefix-format "%-30b %e %s")
+                      (org-agenda-remove-tags t)
+                      (org-agenda-sorting-strategy '(deadline-up priority-up effort-up))
+                      (org-super-agenda-groups
+                       '((:name "House" :tag "@house" )
+                         (:name "Makerspace" :tag "@makerspace" )
+                         (:name "Mom" :tag "@mom" )
+                         (:name "Jessica" :tag "@jessica")
+                         (:name "Store" :tag "@store")
+                         (:name "Amazon" :tag "@amazon")
+                         (:name "Untagged" :and (:not (:tag)) )))))
+          ))
+        ("w" "Weekly Review"
+         (
+          ;; (agenda "" ((org-agenda-skip-function `(org-agenda-skip-entry-if 'todo '("WAITING" "TODO" "TODOLOW" "SNOOZED")))))
+          (tags "TODO=\"SOMEDAY\"-SCHEDULED={.+}"
+                ((org-agenda-prefix-format "%-50b %s")
+                 (org-agenda-overriding-header "Not scheduled reviews")))
+          (tags "TODO=\"SOMEDAY\"+SCHEDULED<=\"<now>\""
+                ((org-agenda-prefix-format "%-50b %s")
+                 (org-agenda-overriding-header "Scheduled or Past Scheduled SOMEDAY Items")))
+         (tags "TODO=\"SOMEDAY\"+SCHEDULED>\"<now>\""
+               ((org-agenda-overriding-header "Future SOMEDAY items"))))
+         )
+        ))
