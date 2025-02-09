@@ -40,8 +40,7 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/Documents/org/")
-
+(setq org-directory "~/Nextcloud/org/")
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -77,6 +76,17 @@
 
 (setq which-key-idle-delay 0.5)
 
+;; interacting with internet
+;; (after! org-download
+;;       (setq org-download-method 'directory)
+;;       (setq org-download-image-dir (concat (file-name-sans-extension (buffer-file-name)) "-img"))
+;;       (setq org-download-image-org-width 600)
+;;       (setq org-download-link-format "[[file:%s]]\n"
+;;         org-download-abbreviate-filename-function #'file-relative-name)
+;;       (setq org-download-link-format-function #'org-download-link-format-function-default))
+
+;; (setq org-download-image-dir ".attachments")
+
 ;; adapted from https://gist.github.com/kim366/8abe978cc295b027df636b218862758e
 ;; Automatically fetch link description (C-c C-l) for link at point
 
@@ -97,25 +107,44 @@
 
 (setq org-make-link-description-function 'my/url-get-title)
 
+;; https://emacs.stackexchange.com/questions/12121/org-mode-parsing-rich-html-directly-when-pasting
+(defun kdm/html2org-clipboard ()
+  "Convert clipboard contents from HTML to Org and then paste (yank)."
+  (interactive)
+  (kill-new (shell-command-to-string "osascript -e 'the clipboard as \"HTML\"' | perl -ne 'print chr foreach unpack(\"C*\",pack(\"H*\",substr($_,11,-3)))' | pandoc -f html -t json | pandoc -f json -t org | sed 's/ / /g'"))
+  (yank))
+(define-key global-map (kbd "C-c v") 'kdm/html2org-clipboard)
+;; "xclip -o -t text/html | pandoc -f html -t json | pandoc -f json -t org"
 ;; begin gtd config
-(setq org-agenda-files '("projects.org" ))
+(setq org-agenda-files '("1 GTD/projects.org" ))
 
-;; ;; inbox setup
-;; (setq org-capture-templates
-;;        `(("i" "Inbox" entry  (file "inbox.org")
-;;         ,(concat "* TODO %?\n"
-;;                  "/Entered on/ %U"))))
+;; inbox setup
+(setq org-inbox-directory (concat org-directory "0 Inbox/"))
 
-;; (defun org-capture-inbox ()
-;;      (interactive)
-;;      (call-interactively 'org-store-link)
-;;      (org-capture nil "i"))
+(defun open-new-project-file ()
+   (let ((fpath (expand-file-name
+                 (read-file-name "Project file name: "
+                                 org-inbox-directory
+                               nil nil nil))))
+    fpath))  ; Return the file path instead of opening it
 
-;; (define-key global-map (kbd "C-c i") 'org-capture-inbox)
+(setq org-capture-templates
+      `(("i" "Inbox" plain
+         (file open-new-project-file)  ; Remove the function call parentheses
+         "#+title: %?")))
+(define-key global-map (kbd "C-c c") 'org-capture)
+
+(defun org-capture-inbox ()
+  "Capture a new item to the inbox using the defined template."
+  (interactive)
+  (org-capture nil "i"))
+
+(define-key global-map (kbd "C-c i") 'org-capture-inbox)
+
 
 ;; todo setup
 (after! org (setq org-todo-keywords
-                  '((sequence "TODO" "TODOLOW" "WAITING" "SOMEDAY" "SNOOZED" "NEXT"))))
+                  '((sequence "TODO" "TODOLOW" "WAITING" "SOMEDAY" "SNOOZED" "NEXT" "DEADLINE"))))
 ;; TODO colors
 (after! org (setq org-todo-keyword-faces
                   '(
@@ -125,10 +154,13 @@
                     ("SOMEDAY" . (:foreground "systemGrayColor" :weight bold))
                     ("SNOOZED" . (:foreground "systemGrayColor" :weight bold))
                     ("NEXT" . (:foreground "systemGrayColor" :weight bold))
+                    ("DEADLINE" . (:foreground "systemYellowColor" :weight bold))
                     )))
 
 ;; agenda setup
 (define-key global-map (kbd "C-c a") 'org-agenda)
+
+(setq org-startup-with-inline-images t)
 
 ;; (defun my/org-agenda-truncate-breadcrumb (breadcrumb max-length)
 ;;   "Truncate the BREADCRUMB string from the beginning if it exceeds MAX-LENGTH."
@@ -171,6 +203,15 @@
        (tags . " %i %-12:c")
        (search . " %i %-12:c")))
 
+(defun my/count-inbox-files ()
+  "Count files in the inbox directory."
+  (length (directory-files org-inbox-directory nil "\\.org$")))
+(defun my/inbox-warning-string ()
+  "Create a warning string about inbox files."
+  (let ((count (my/count-inbox-files)))
+    (when (> count 0)
+      (propertize (format "⚠ You have %d file(s) in your inbox!" count)
+                  'face '(:foreground "red" :weight bold)))))
 (setq org-agenda-custom-commands
       '(
         ("d" "Dashboard"
@@ -196,29 +237,40 @@
                 ((org-agenda-overriding-header "DEADLINE Items")
                  (org-agenda-sorting-strategy '(deadline-up))))
 
-          (agenda "" ((org-agenda-span 7)))
+          ;; (agenda "" ((org-agenda-span 7)))
           ;; Next 7 days (excluding SOMEDAY)
-          ;; (agenda ""
-          ;;         ((org-agenda-span 7)
-          ;;          (org-agenda-overriding-header "Next 7 Days (Excluding SOMEDAY)")
-          ;;          (org-agenda-skip-function
-          ;;           '(org-agenda-skip-entry-if 'todo '("SOMEDAY" "SNOOZED")))))
+          (agenda ""
+                  ((org-agenda-span 7)
+                   (org-agenda-overriding-header "Next 7 Days (Excluding SOMEDAY)")
+                   (org-agenda-skip-function
+                    '(org-agenda-skip-entry-if 'todo '("SOMEDAY")))))
 
           ;; Categorized by Tags
           (todo "TODO"
-                     ((org-agenda-overriding-header "Categorized by Tags")
+                     (
                       (org-agenda-prefix-format "%-30b %e %s")
                       (org-agenda-remove-tags t)
                       (org-agenda-sorting-strategy '(deadline-up priority-up effort-up))
                       (org-super-agenda-groups
-                       '((:name "House" :tag "@house" )
+                       '(
+                         ;; (:name "School" :and (:heading-regexp ("school.*") :auto-parent ""))
+                         (:name "House" :tag "@house" )
                          (:name "Makerspace" :tag "@makerspace" )
                          (:name "Mom" :tag "@mom" )
                          (:name "Jessica" :tag "@jessica")
                          (:name "Store" :tag "@store")
                          (:name "Amazon" :tag "@amazon")
-                         (:name "Untagged" :and (:not (:tag)) )))))
-          ))
+                         (:name "Bike Shop" :tag "@bikeshop")
+                         (:name "Untagged"  )))))
+          )
+         ((org-agenda-start-with-log-mode nil)
+          (org-agenda-window-setup 'current-window)
+          (org-agenda-start-with-follow-mode nil)
+          (org-agenda-block-separator ?─)
+          ;; Add the warning through a different mechanism
+          (org-agenda-finalize-hook (lambda () (insert (or (my/inbox-warning-string) "") "\n\n")))
+          )
+         )
         ("w" "Weekly Review"
          (
           ;; (agenda "" ((org-agenda-skip-function `(org-agenda-skip-entry-if 'todo '("WAITING" "TODO" "TODOLOW" "SNOOZED")))))
@@ -232,3 +284,26 @@
                ((org-agenda-overriding-header "Future SOMEDAY items"))))
          )
         ))
+
+;; org roam config
+(setq org-roam-directory org-directory)
+(setq org-roam-capture-templates
+       '(("d" "default" plain
+          "%?"
+          :if-new (file+head "0 Inbox/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+          :unnarrowed t)
+         ("t" "tag" plain
+          "%?"
+          :if-new (file+head "4 Tags/${slug}.org" "#+title: ${title}\n")
+          :unnarrowed t)
+         ("s" "source material" plain
+          "%?"
+          :if-new (file+head "5 Sources/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n\n* tags\n\n\n")
+          :unnarrowed t)
+         ("n" "note" plain
+          "%?"
+          :if-new (file+head "3 Notes/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n\n* tags\n\n\n* references")
+          :unnarrowed t)
+         ))
+
+(define-key global-map (kbd "C-c n") 'org-roam-capture)
