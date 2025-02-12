@@ -103,6 +103,7 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # start customizations
+eval "$(pyenv init --path)"
 
 if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
@@ -110,11 +111,10 @@ fi
 
 PATH="$HOME/.config/emacs/bin:$PATH"
 
-
-. "/opt/homebrew/opt/asdf/libexec/asdf.sh"
-
-. "/opt/homebrew/opt/asdf/etc/bash_completion.d/asdf"
-
 # set -o vi
 
-export obsidian=~/Documents/obsidian/default/
+export obsidian=~/Documents/obsidian/default
+export math246=$obsidian/@class_notes/math246
+export cmsc320=$obsidian/@class_notes/cmsc320
+export math410=$obsidian/@class_notes/math410
+export stat410=$obsidian/@class_notes/stat410
