@@ -130,16 +130,16 @@
 
 (setq org-capture-templates
       `(("i" "Inbox" plain
-         (file open-new-project-file)  ; Remove the function call parentheses
+         (file open-new-project-file)
          "#+title: %?")))
 (define-key global-map (kbd "C-c c") 'org-capture)
 
-(defun org-capture-inbox ()
-  "Capture a new item to the inbox using the defined template."
-  (interactive)
-  (org-capture nil "i"))
+;; (defun org-capture-inbox ()
+;;   "Capture a new item to the inbox using the defined template."
+;;   (interactive)
+;;   (org-capture nil "i"))
 
-(define-key global-map (kbd "C-c i") 'org-capture-inbox)
+;; (define-key global-map (kbd "C-c i") 'org-capture-inbox)
 
 
 ;; todo setup
