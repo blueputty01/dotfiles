@@ -7,12 +7,12 @@ return {
 		{
 			intensity = "Bold",
 			italic = false,
-			font = wezterm.font("JetBrains Mono", { weight = "Bold", stretch = "Normal", style = "Normal" }),
+			font = wezterm.font("JetBrains Mono", { weight = "Black", stretch = "Normal", style = "Normal" }),
 		},
 		{
 			intensity = "Bold",
 			italic = true,
-			font = wezterm.font("JetBrains Mono", { weight = "Bold", stretch = "Normal", style = "Italic" }),
+			font = wezterm.font("JetBrains Mono", { weight = "Black", stretch = "Normal", style = "Italic" }),
 		},
 	},
 }

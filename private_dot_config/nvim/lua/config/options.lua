@@ -11,3 +11,22 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.softtabstop = 0
   end,
 })
+
+-- cd to opened directory
+vim.api.nvim_create_autocmd("VimEnter", {
+  pattern = "*",
+  callback = function()
+    -- Get args directly from vim.v.argv
+    local args = vim.v.argv
+    -- Check if the dir argument is provided
+    print(#args)
+    if #args >= 3 then
+      local dir = args[3]
+
+      -- Check if the argument is a directory
+      if vim.fn.isdirectory(dir) == 1 then
+        vim.cmd.cd(dir)
+      end
+    end
+  end,
+})
