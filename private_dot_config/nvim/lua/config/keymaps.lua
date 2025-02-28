@@ -2,6 +2,10 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 
+vim.keymap.set("n", "<C-`>", ":split | terminal<CR>", { noremap = true, silent = true })
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true, silent = true })
+vim.keymap.set("t", "<C-`>", "<C-\\><C-n><C-w>c", { noremap = true, silent = true })
+vim.keymap.set("t", "<C-~>", "<C-\\><C-n>:bd", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>gg", require("neogit").open, { desc = "Open Neogit" })
 
 -- from https://github.com/linkarzu/dotfiles-latest/blob/562bcc0323338b810b602430bcf5ecad86d74a16/neovim/neobean/lua/config/keymaps.lua#L2255
