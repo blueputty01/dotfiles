@@ -121,3 +121,10 @@ export stat410=$obsidian/@class_notes/stat410
 export socy241=$obsidian/@class_notes/socy241
 
 eval "$(zoxide init zsh)"
+
+# bun completions
+[ -s "/Users/alexyang/.bun/_bun" ] && source "/Users/alexyang/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
