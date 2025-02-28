@@ -134,6 +134,7 @@ alt-9 = 'workspace 9'
 alt-0 = 'workspace 0'
 alt-c = 'workspace C'
 alt-m = 'workspace M'
+alt-a = 'workspace A'
 
 alt-f = 'fullscreen'
 
@@ -150,6 +151,7 @@ alt-shift-9 = 'move-node-to-workspace 9'
 alt-shift-0 = 'move-node-to-workspace 0'
 alt-shift-c = 'move-node-to-workspace C'
 alt-shift-m = 'move-node-to-workspace M'
+alt-shift-a = 'move-node-to-workspace A'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 alt-tab = 'workspace-back-and-forth'
@@ -163,7 +165,7 @@ alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
 alt-shift-semicolon = 'mode service'
-alt-shift-a = 'mode media'
+alt-shift-s = 'mode media'
 
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
