@@ -113,7 +113,7 @@ PATH="$HOME/.config/emacs/bin:$PATH"
 
 # set -o vi
 
-export obsidian=~/Documents/obsidian/default
+export obsidian=~/Nextcloud/obsidian-default
 export math246=$obsidian/@class_notes/math246
 export cmsc320=$obsidian/@class_notes/cmsc320
 export math410=$obsidian/@class_notes/math410
