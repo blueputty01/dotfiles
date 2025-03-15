@@ -1,3 +1,5 @@
+vim.g.snacks_animate = false
+
 return {
   {
     "folke/tokyonight.nvim",
@@ -13,6 +15,12 @@ return {
     "LazyVim/LazyVim",
     opts = {
       colorscheme = "tokyonight",
+    },
+  },
+  {
+    "folke/snacks.nvim",
+    opts = {
+      scroll = { enabled = false },
     },
   },
 }
