@@ -8,5 +8,5 @@ url = "https://github.com/zsh-users/zsh-autosuggestions"
 refreshPeriod = "168h"
 [".zsh/powerlevel10k"]
 type = "git-repo"
-url = "https://github.com/dracula/powerlevel10k"
+url = "https://github.com/romkatv/powerlevel10k"
 refreshPeriod = "168h"
