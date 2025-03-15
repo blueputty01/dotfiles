@@ -1,0 +1,27 @@
+eval "$(pyenv init --path)"
+
+PATH="$HOME/.config/emacs/bin:$PATH"
+
+# asdf setup
+export ASDF_DATA_DIR=$HOME/.asdf
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+
+# --- bun setup ---
+# bun completions
+[ -s "/Users/alexyang/.bun/_bun" ] && source "/Users/alexyang/.bun/_bun"
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# --- convenience features ---
+eval "$(zoxide init zsh)"
+# vim motions
+
+# vars to notes
+export obsidian=~/Nextcloud/obsidian-default
+export class_notes=~/Nextcloud/class_notes
+export math246=$class_notes/math246
+export cmsc320=$class_notes/cmsc320
+export math410=$class_notes/math410
+export stat410=$class_notes/stat410
+export socy241=$class_notes/socy241
+
