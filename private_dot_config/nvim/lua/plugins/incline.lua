@@ -8,6 +8,9 @@ return {
         padding = 0,
         margin = { horizontal = 0, vertical = 0 },
       },
+      hide = {
+        cursorline = true,
+      },
       render = function(p)
         local full_path = vim.api.nvim_buf_get_name(p.buf)
         local function escape_pattern(str)

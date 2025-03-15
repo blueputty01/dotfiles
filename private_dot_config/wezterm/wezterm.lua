@@ -1,6 +1,7 @@
 local wezterm = require("wezterm")
 
-return {
+local act = wezterm.action
+local config = {
 	window_decorations = "RESIZE",
 	color_scheme = "Catppuccin Mocha", -- or Macchiato, Frappe, Latte
 	font_rules = {
@@ -16,3 +17,6 @@ return {
 		},
 	},
 }
+config.send_composed_key_when_left_alt_is_pressed = false
+
+return config

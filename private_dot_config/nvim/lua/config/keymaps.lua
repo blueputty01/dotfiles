@@ -7,6 +7,54 @@ vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true, silent = true })
 vim.keymap.set("t", "<C-`>", "<C-\\><C-n><C-w>c", { noremap = true, silent = true })
 vim.keymap.set("t", "<C-~>", "<C-\\><C-n>:bd", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>gg", require("neogit").open, { desc = "Open Neogit" })
+vim.keymap.set("n", "<leader>gd", ":DiffViewOpen", { desc = "Open DiffView" })
+
+-- markdown shortcuts
+
+-- Function to fetch the title from a URL
+local function fetch_title(url)
+  -- Use curl to fetch the webpage and grep to extract the title
+  local handle = io.popen(string.format('curl -s "%s" | grep -oP "(?<=<title>).*?(?=</title>)"', url))
+  if not handle then
+    print("Failed to fetch title.")
+    return url
+  end
+
+  local title = handle:read("*a")
+  handle:close()
+  return title:gsub("^%s*(.-)%s*$", "%1") -- Trim whitespace
+end
+
+-- Function to insert the Markdown-formatted link
+local function insert_markdown_link()
+  -- Get the URL from the clipboard
+  local clipboard_cmd = vim.fn.has("macunix") == 1 and "pbpaste" or "xclip -o -selection clipboard"
+  local handle = io.popen(clipboard_cmd)
+  if not handle then
+    print("Failed to read from clipboard.")
+    return
+  end
+
+  local url = handle:read("*a")
+  handle:close()
+
+  -- Fetch the title
+  local title = fetch_title(url)
+
+  -- Insert the Markdown-formatted link
+  if title and url then
+    local markdown_link = string.format("[%s](%s)", title, url)
+    vim.api.nvim_put({ markdown_link }, "c", true, true)
+  else
+    print("Failed to fetch title or URL.")
+  end
+end
+
+-- Keybinding for <leader>ml
+vim.keymap.set("n", "<leader>ml", "", {
+  noremap = true,
+  callback = insert_markdown_link,
+})
 
 -- from https://github.com/linkarzu/dotfiles-latest/blob/562bcc0323338b810b602430bcf5ecad86d74a16/neovim/neobean/lua/config/keymaps.lua#L2255
 
