@@ -14,7 +14,6 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 # --- convenience features ---
 eval "$(zoxide init zsh)"
-# vim motions
 
 # vars to notes
 export obsidian=~/Nextcloud/obsidian-default
