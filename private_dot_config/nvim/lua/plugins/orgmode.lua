@@ -9,7 +9,16 @@ return {
     require("orgmode").setup({
       org_agenda_files = "~/Nextcloud/obsidian-default/gtd/**",
       org_default_notes_file = "~/Nextcloud/org/refile.org",
-      org_todo_keywords = { "TODO(t)", "WAITING", "SOMEDAY", "SNOOZED", "NEXT", "DEADLINE", "|", "DONE" },
+      org_todo_keywords = {
+        "TODO(t)",
+        "WAITING",
+        "SOMEDAY",
+        "SNOOZED(z)",
+        "NEXT",
+        "DEADLINE",
+        "|",
+        "DONE",
+      },
       org_todo_keyword_faces = {
         TODO = ":foreground orange", -- overrides builtin color for `TODO` keyword
         WAITING = ":slant italic",
