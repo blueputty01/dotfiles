@@ -3,7 +3,7 @@
 -- Add any additional keymaps here
 
 vim.keymap.set("n", "<C-`>", ":split | terminal<CR>", { noremap = true, silent = true })
-vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true, silent = true })
+vim.keymap.set({ "t", "i", "v" }, "<C-Esc>", "<C-\\><C-n>", { noremap = true, silent = true })
 vim.keymap.set("t", "<C-`>", "<C-\\><C-n><C-w>c", { noremap = true, silent = true })
 vim.keymap.set("t", "<C-~>", "<C-\\><C-n>:bd", { noremap = true, silent = true })
 vim.keymap.set("n", "<leader>gg", require("neogit").open, { desc = "Open Neogit" })
