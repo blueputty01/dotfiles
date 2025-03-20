@@ -28,10 +28,6 @@ export socy241=$class_notes/socy241
 
 export GPG_TTY=$(tty)
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
 export CALIBRE_DEVELOP="/Applications/calibre.app/Contents/MacOS"
 
 export PATH="/usr/local/opt/tcl-tk/bin:$PATH"
