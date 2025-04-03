@@ -4,6 +4,11 @@ eval "$(pyenv init -)"
 
 PATH="$HOME/.config/emacs/bin:$PATH"
 
+# --- deno setup ---
+# Add deno completions to search path
+if [[ ":$FPATH:" != *":/Users/alexyang/.zsh/completions:"* ]]; then export FPATH="/Users/alexyang/.zsh/completions:$FPATH"; fi
+. "/Users/alexyang/.deno/env"
+
 # asdf setup
 export ASDF_DATA_DIR=$HOME/.asdf
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
