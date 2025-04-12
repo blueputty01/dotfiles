@@ -11,6 +11,7 @@ return {
   "nvim-orgmode/orgmode",
   event = "VeryLazy",
   ft = { "org" },
+  enabled = vim.fn.expand("%:p"):match(vim.fn.expand("~/Nextcloud/obsidian-default/1lists")),
   config = function()
     -- Setup orgmode
     require("orgmode").setup({
@@ -23,6 +24,16 @@ return {
             {
               type = "tags_todo",
               match = 'TODO="TODO"',
+            },
+          },
+        },
+        w = {
+          name = "WAITING",
+          description = "match only WAITING",
+          types = {
+            {
+              type = "tags_todo",
+              match = 'TODO="WAITING"',
             },
           },
         },
