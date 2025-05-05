@@ -34,3 +34,7 @@ export NVM_DIR="$HOME/.nvm"
 # --- alias setup ---
 alias ls='ls --color=auto'
 alias pandoc='pandoc --wrap=none'
+
+{{ if eq .chezmoi.hostname "rainier" -}}
+{{-   include ".zshrc_rainier" -}}
+{{ end -}}

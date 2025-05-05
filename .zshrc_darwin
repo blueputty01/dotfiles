@@ -2,7 +2,7 @@ export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
-PATH="$HOME/.config/emacs/bin:$PATH"
+# PATH="$HOME/.config/emacs/bin:$PATH"
 
 # --- deno setup ---
 # Add deno completions to search path
@@ -21,16 +21,6 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 # --- convenience features ---
 eval "$(zoxide init zsh)"
-
-# vars to notes
-export obsidian=~/Nextcloud/obsidian-default
-export class_notes=~/Nextcloud/class_notes
-export math246=$class_notes/math246
-export cmsc320=$class_notes/cmsc320
-export math410=$class_notes/math410
-export stat410=$class_notes/stat410
-export socy241=$class_notes/socy241
-alias md-to-anki='$HOME/Documents/anki/md-to-anki/examples/runners/md-anki.sh'
 
 export GPG_TTY=$(tty)
 
