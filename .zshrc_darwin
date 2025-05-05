@@ -30,6 +30,7 @@ export cmsc320=$class_notes/cmsc320
 export math410=$class_notes/math410
 export stat410=$class_notes/stat410
 export socy241=$class_notes/socy241
+alias md-to-anki='$HOME/Documents/anki/md-to-anki/examples/runners/md-anki.sh'
 
 export GPG_TTY=$(tty)
 
