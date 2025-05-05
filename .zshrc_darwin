@@ -6,8 +6,8 @@ PATH="$HOME/.config/emacs/bin:$PATH"
 
 # --- deno setup ---
 # Add deno completions to search path
-if [[ ":$FPATH:" != *":/Users/alexyang/.zsh/completions:"* ]]; then export FPATH="/Users/alexyang/.zsh/completions:$FPATH"; fi
-. "/Users/alexyang/.deno/env"
+if [[ ":$FPATH:" != *":$HOME/.zsh/completions:"* ]]; then export FPATH="$HOME/.zsh/completions:$FPATH"; fi
+. "$HOME/.deno/env"
 
 # asdf setup
 export ASDF_DATA_DIR=$HOME/.asdf
@@ -15,7 +15,7 @@ export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
 # --- bun setup ---
 # bun completions
-[ -s "/Users/alexyang/.bun/_bun" ] && source "/Users/alexyang/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
