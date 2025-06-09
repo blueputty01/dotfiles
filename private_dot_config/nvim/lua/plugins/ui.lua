@@ -1,4 +1,5 @@
 vim.g.snacks_animate = false
+vim.opt.guicursor = ""
 
 return {
   {
@@ -15,12 +16,6 @@ return {
     "LazyVim/LazyVim",
     opts = {
       colorscheme = "tokyonight",
-    },
-  },
-  {
-    "folke/snacks.nvim",
-    opts = {
-      scroll = { enabled = false },
     },
   },
 }
