@@ -38,3 +38,7 @@ alias pandoc='pandoc --wrap=none'
 {{ if eq .chezmoi.hostname "rainier" -}}
 {{-   include ".zshrc_rainier" -}}
 {{ end -}}
+
+autoload -U edit-command-line
+zle -N edit-command-line 
+bindkey -M vicmd v edit-command-line
