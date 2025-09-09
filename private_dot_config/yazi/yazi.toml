@@ -1,0 +1,17 @@
+[mgr]
+[open]
+append_rules = [
+  { name = "*.pdf", use = "acrobat" },
+  { name = "*/", use = [
+    "edit",
+    "open",
+    "code",
+  ] },
+]
+[opener]
+acrobat = [
+  { run = 'open -a "Adobe Acrobat.app" "$@"', desc = "Open with Acrobat", for = "macos" },
+]
+code = [
+  { run = 'open -a "Visual Studio Code.app" "$@"', desc = "Open with Code", for = "macos" },
+]

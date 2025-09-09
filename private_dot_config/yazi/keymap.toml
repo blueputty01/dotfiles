@@ -1,0 +1,29 @@
+[[mgr.prepend_keymap]]
+on = ["<C-e>"]
+run = "shell --block 'nvim \"$0'"
+desc = "Open neovim in current directory"
+
+[[mgr.prepend_keymap]]
+on = ["<C-t>"]
+run = "shell --block 'wezterm cli spawn --cwd \"$0\" --new-window'"
+desc = "Open terminal in current directory"
+
+[[mgr.prepend_keymap]]
+on = ["m"]
+run = "plugin bookmarks save"
+desc = "Save current position as a bookmark"
+
+[[mgr.prepend_keymap]]
+on = ["'"]
+run = "plugin bookmarks jump"
+desc = "Jump to a bookmark"
+
+[[mgr.prepend_keymap]]
+on = ["b", "d"]
+run = "plugin bookmarks delete"
+desc = "Delete a bookmark"
+
+[[mgr.prepend_keymap]]
+on = ["b", "D"]
+run = "plugin bookmarks delete_all"
+desc = "Delete all bookmarks"

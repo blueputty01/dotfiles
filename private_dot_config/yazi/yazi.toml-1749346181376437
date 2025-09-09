@@ -1,0 +1,7 @@
+[manager]
+[open]
+append_rules = [{ name = "*.pdf", use = "acrobat" }]
+[opener]
+acrobat = [
+  { run = 'open -a "Adobe Acrobat.app" "$@"', desc = "Open with Acrobat", for = "macos" },
+]
