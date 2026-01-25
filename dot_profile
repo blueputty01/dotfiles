@@ -27,3 +27,5 @@ if [ -d "$HOME/.local/bin" ] ; then
 fi
 
 . "/Users/alexyang/.deno/env"
+
+export PATH="$PATH:/home/alex/.local/share/JetBrains/Toolbox/scripts"

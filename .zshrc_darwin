@@ -9,10 +9,6 @@ eval "$(pyenv init -)"
 if [[ ":$FPATH:" != *":$HOME/.zsh/completions:"* ]]; then export FPATH="$HOME/.zsh/completions:$FPATH"; fi
 . "$HOME/.deno/env"
 
-# asdf setup
-export ASDF_DATA_DIR=$HOME/.asdf
-export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
-
 # --- bun setup ---
 # bun completions
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"

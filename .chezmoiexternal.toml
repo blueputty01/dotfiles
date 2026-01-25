@@ -10,7 +10,3 @@ refreshPeriod = "168h"
 type = "git-repo"
 url = "https://github.com/romkatv/powerlevel10k"
 refreshPeriod = "168h"
-[".nvm"]
-type = "git-repo"
-url = "https://github.com/nvm-sh/nvm"
-refreshPeriod = "168h"
