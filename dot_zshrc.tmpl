@@ -13,6 +13,8 @@ export EDITOR='nvim'
 
 export NVIM_APPNAME='kickstart.nvim'
 
+eval "$(~/.local/bin/mise activate zsh)"
+
 # - removes whitespace from template code
 {{ if eq .chezmoi.os "darwin" -}}
 {{-   include ".zshrc_darwin" -}}
