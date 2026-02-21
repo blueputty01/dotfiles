@@ -1,8 +1,8 @@
 [mgr]
 [open]
 append_rules = [
-  { name = "*.pdf", use = "acrobat" },
-  { name = "*/", use = [
+  { url = "*.pdf", use = "acrobat" },
+  { url = "*/", use = [
     "edit",
     "open",
     "code",
