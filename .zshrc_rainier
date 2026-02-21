@@ -1,6 +1,6 @@
 # vars to notes
-export obsidian=~/Nextcloud/obsidian-default
-export class_notes=~/Nextcloud/class_notes
+export obsidian=~/OpenCloud/Personal/obsidian-default/
+export class_notes=~/OpenCloud/Personal/obsidian-default/
 alias md-to-anki='$HOME/Documents/anki/md-to-anki/runners/md-anki.sh'
 alias tex-screenshot='cd $HOME/Documents/code/tex-screenshot/ && ./tex-screenshot'
 
