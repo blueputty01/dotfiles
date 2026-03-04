@@ -39,9 +39,11 @@ source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 alias ls='ls --color=auto'
 alias pandoc='pandoc --wrap=none'
 
-{{ if eq .chezmoi.hostname "rainier" -}}
+{{ "https://www.chezmoi.io/user-guide/machines/macos/#determine-the-hostname" }}
+{{ $computerName := output "scutil" "--get" "ComputerName" | trim }}
+{{ if eq $computerName "rainier" -}}
 {{-   include ".zshrc_rainier" -}}
-{{ end -}}
+{{- end -}}
 
 autoload -U edit-command-line
 zle -N edit-command-line 
