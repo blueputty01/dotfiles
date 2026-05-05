@@ -88,7 +88,7 @@ outer.right = 0
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
 # You can uncomment the following lines to open up terminal with alt + enter shortcut (like in i3)
-alt-enter = 'exec-and-forget osascript ~/.config/aerospace/openwez.scpt'
+alt-t = 'exec-and-forget osascript ~/.config/aerospace/openwez.scpt'
 
 alt-n = '''exec-and-forget osascript -e '
 tell application "Brave Browser" to make new window'
