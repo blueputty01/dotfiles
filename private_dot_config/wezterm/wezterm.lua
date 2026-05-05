@@ -16,6 +16,8 @@ local config = {
 			font = wezterm.font("JetBrains Mono", { weight = "Black", stretch = "Normal", style = "Italic" }),
 		},
 	},
+	-- https://wezterm.org/config/lua/config/term.html
+	term = "wezterm",
 }
 config.send_composed_key_when_left_alt_is_pressed = false
 
